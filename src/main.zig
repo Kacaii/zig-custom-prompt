@@ -3,7 +3,7 @@ const fs = std.fs;
 const builtin = @import("builtin");
 const Child = std.process.Child;
 
-const Workspace = @import("./sections/workspace.zig");
+const Workspace = @import("./sections/Workspace.zig");
 
 pub fn main() !void {
     const cwd = fs.cwd();
@@ -19,8 +19,7 @@ pub fn main() !void {
         _ = debug_allocator.deinit();
     };
 
-    const workspace_tag = Workspace.getWorkspace(cwd);
-    const workspace_section = try Workspace.init(allocator, workspace_tag);
+    const workspace_section = try Workspace.init(allocator, cwd);
     defer allocator.free(workspace_section);
 
     _ = try stdout.print("{s}", .{workspace_section});

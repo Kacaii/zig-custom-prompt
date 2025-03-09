@@ -5,15 +5,12 @@ const testing = std.testing;
 const Child = std.process.Child;
 const Allocator = std.mem.Allocator;
 
-const WorkspaceTags = @import("../workspace.zig").WorkspaceTags;
-
 const set_color = struct {
     const green = "\x1b[32m";
     const normal = "\x1b[39m";
 };
 
 pub const DenoWorkspace = struct {
-    pub const tag: WorkspaceTags = .deno;
     const root_file = "deno.json";
 
     pub fn checkRoot(dir: fs.Dir) bool {
@@ -30,18 +27,15 @@ pub const DenoWorkspace = struct {
         defer allocator.free(deno_version_cmd.stdout);
         defer allocator.free(deno_version_cmd.stderr);
 
-        // HACK: There must be a better way to do this.
         const deno_version_first_line = std.mem.trimRight(u8, deno_version_cmd.stdout, "\n");
         const index_of_parenthesis = std.mem.indexOf(u8, deno_version_first_line, "(");
         const deno_version = deno_version_first_line[0 .. index_of_parenthesis.? - 1];
 
-        const deno_section = try std.mem.concat(allocator, u8, &[_][]const u8{
-            set_color.green,
-            "[ ",
-            deno_version,
-            "]",
-            set_color.normal,
-        });
+        const deno_section = try std.mem.concat(
+            allocator,
+            u8,
+            &[_][]const u8{ set_color.green, "[ ", deno_version, "]", set_color.normal },
+        );
 
         return deno_section;
     }

@@ -5,15 +5,12 @@ const testing = std.testing;
 const Child = std.process.Child;
 const Allocator = std.mem.Allocator;
 
-const WorkspaceTags = @import("../workspace.zig").WorkspaceTags;
-
 const set_color = struct {
     const yellow = "\x1b[33m";
     const normal = "\x1b[39m";
 };
 
 pub const ZigWorkspace = struct {
-    pub const tag: WorkspaceTags = .zig;
     const root_file = "build.zig";
 
     pub fn checkRoot(dir: fs.Dir) bool {
@@ -32,13 +29,11 @@ pub const ZigWorkspace = struct {
 
         const zig_version = std.mem.trimRight(u8, zig_version_cmd.stdout, "\n");
 
-        const zig_section = try std.mem.concat(allocator, u8, &[_][]const u8{
-            set_color.yellow,
-            "[ Zig ",
-            zig_version,
-            "]",
-            set_color.normal,
-        });
+        const zig_section = try std.mem.concat(
+            allocator,
+            u8,
+            &[_][]const u8{ set_color.yellow, "[ Zig ", zig_version, "]", set_color.normal },
+        );
         return zig_section;
     }
 };
