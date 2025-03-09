@@ -8,7 +8,7 @@ const DefaultWorkspace = @import("./workspaces/default_workspace.zig").DefaultWo
 
 const Allocator = std.mem.Allocator;
 
-pub const Tags = enum {
+const Tags = enum {
     zig,
     deno,
     default_workspace,

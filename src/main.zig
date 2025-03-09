@@ -22,5 +22,5 @@ pub fn main() !void {
     const workspace_section = try Workspace.init(allocator, cwd);
     defer allocator.free(workspace_section);
 
-    _ = try stdout.print("{s}", .{workspace_section});
+    _ = try stdout.print(" {s} \n 󰁕 ", .{workspace_section});
 }
