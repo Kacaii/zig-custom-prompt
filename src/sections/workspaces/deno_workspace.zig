@@ -22,15 +22,18 @@ pub const DenoWorkspace = struct {
 
     /// Caller owns the memory
     pub fn init(allocator: Allocator) ![]const u8 {
-        const deno_version_run = try Child.run(.{
+        const deno_version_cmd = try Child.run(.{
             .allocator = allocator,
             .argv = &[_][]const u8{ "deno", "--version" },
         });
 
-        defer allocator.free(deno_version_run.stdout);
-        defer allocator.free(deno_version_run.stderr);
+        defer allocator.free(deno_version_cmd.stdout);
+        defer allocator.free(deno_version_cmd.stderr);
 
-        const deno_version = std.mem.trimRight(u8, deno_version_run.stdout, " (");
+        // HACK: There must be a better way to do this.
+        const deno_version_first_line = std.mem.trimRight(u8, deno_version_cmd.stdout, "\n");
+        const index_of_parenthesis = std.mem.indexOf(u8, deno_version_first_line, "(");
+        const deno_version = deno_version_first_line[0 .. index_of_parenthesis.? - 1];
 
         const deno_section = try std.mem.concat(allocator, u8, &[_][]const u8{
             set_color.green,
@@ -39,6 +42,7 @@ pub const DenoWorkspace = struct {
             "]",
             set_color.normal,
         });
+
         return deno_section;
     }
 };
@@ -53,7 +57,7 @@ test " detect deno root" {
     try testing.expect(DenoWorkspace.checkRoot(tempdir.dir) == true);
 }
 
-test " prints correct information" {
+test " print correct information" {
     var alloc = testing.allocator;
 
     var tempdir = testing.tmpDir(.{});
@@ -66,5 +70,5 @@ test " prints correct information" {
     defer alloc.free(output);
 
     // HACK: This needs to be updated manually
-    try testing.expectEqualStrings("\x1b[32m[ deno 2.2.3]\x1b[39m", output);
+    try testing.expectEqualStrings("\x1b[32m[ deno 2.1.10]\x1b[39m", output);
 }

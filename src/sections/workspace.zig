@@ -10,7 +10,7 @@ const Allocator = std.mem.Allocator;
 pub const WorkspaceTags = enum {
     zig,
     deno,
-    not_workspace,
+    default_workspace,
 };
 
 pub fn getWorkspace(dir: fs.Dir) WorkspaceTags {
@@ -35,7 +35,9 @@ pub fn init(allocator: Allocator, w: WorkspaceTags) ![]const u8 {
     const workspace = try switch (w) {
         .zig => ZigWorkspace.init(allocator),
         .deno => DenoWorkspace.init(allocator),
-        .not_workspace => "not a workspace",
+
+        // FIXME: Make a default Workspace so it doesnt break when there is nothing to allocate.
+        .default_workspace => "",
     };
 
     return workspace;

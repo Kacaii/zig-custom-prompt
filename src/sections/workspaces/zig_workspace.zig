@@ -22,15 +22,15 @@ pub const ZigWorkspace = struct {
 
     /// Caller owns the memory
     pub fn init(allocator: Allocator) ![]const u8 {
-        const zig_version_run = try Child.run(.{
+        const zig_version_cmd = try Child.run(.{
             .allocator = allocator,
             .argv = &[_][]const u8{ "zig", "version" },
         });
 
-        defer allocator.free(zig_version_run.stdout);
-        defer allocator.free(zig_version_run.stderr);
+        defer allocator.free(zig_version_cmd.stdout);
+        defer allocator.free(zig_version_cmd.stderr);
 
-        const zig_version = std.mem.trimRight(u8, zig_version_run.stdout, "\n");
+        const zig_version = std.mem.trimRight(u8, zig_version_cmd.stdout, "\n");
 
         const zig_section = try std.mem.concat(allocator, u8, &[_][]const u8{
             set_color.yellow,
@@ -53,7 +53,7 @@ test " detect zig root" {
     try testing.expect(ZigWorkspace.checkRoot(tempdir.dir) == true);
 }
 
-test " prints correct information" {
+test " print correct information" {
     var alloc = testing.allocator;
 
     var tempdir = testing.tmpDir(.{});
