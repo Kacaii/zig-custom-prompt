@@ -28,5 +28,6 @@ pub fn main() !void {
     const workspace_section = try WorkspaceSection.init(allocator, cwd);
     defer allocator.free(workspace_section);
 
-    _ = try stdout.print(" {s} │ {s} \n 󰁕 ", .{ path_section, workspace_section });
+    //TODO: Make and arrow section so you can customize the color.
+    _ = try stdout.print(" {s} | {s} \n 󰁕 ", .{ workspace_section, path_section });
 }

@@ -25,7 +25,7 @@ pub fn init(allocator: Allocator, dir: std.fs.Dir) ![]const u8 {
         allocator,
         u8,
         &[_][]const u8{
-            set_color.blue,
+            set_color.normal,
             parsed_path,
             set_color.normal,
         },
