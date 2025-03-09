@@ -3,20 +3,16 @@ const std = @import("std");
 const Child = std.process.Child;
 const Allocator = std.mem.Allocator;
 
-const W = @import("../workspace.zig");
-
 const set_color = struct {
     const yellow = "\x1b[33m";
     const normal = "\x1b[39m";
 };
 
-pub const ZigWorkspace: W.Workspace = .{
-    .color = set_color.yellow,
-    .root = "build.zig",
-    .init_fn = init,
-};
+fn checkRoot(dir: std.fs.Dir) bool {
+    if (dir.openFile("build.zig", .{ .mode = .read_only })) |_| return true else |_| return false;
+}
 
-fn init(allocator: Allocator) W.WorkspaceError![]u8 {
+fn init(allocator: Allocator) ![]u8 {
     const zig_version_run = try Child.run(.{
         .allocator = allocator,
         .argv = &[_][]const u8{ "zig", "version" },
