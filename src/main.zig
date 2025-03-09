@@ -1,7 +1,12 @@
 const std = @import("std");
 const builtin = @import("builtin");
+const Child = std.process.Child;
+
+const Section = @import("./Sections.zig");
 
 pub fn main() !void {
+    const stdout = std.io.getStdOut().writer();
+
     var debug_allocator: std.heap.DebugAllocator(.{}) = .init;
     const allocator, const is_debug = switch (builtin.mode) {
         .Debug, .ReleaseSafe => .{ debug_allocator.allocator(), true },
@@ -11,4 +16,12 @@ pub fn main() !void {
     defer if (is_debug) {
         _ = debug_allocator.deinit();
     };
+
+    const zig_section = try Section.ZigVersion.init(allocator);
+    defer allocator.free(zig_section);
+
+    _ = try stdout.print(
+        "{s}",
+        .{zig_section},
+    );
 }
