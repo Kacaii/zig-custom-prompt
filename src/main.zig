@@ -2,8 +2,6 @@ const std = @import("std");
 const builtin = @import("builtin");
 const Child = std.process.Child;
 
-const WorkSpace = @import("./workspace.zig");
-
 pub fn main() !void {
     // const stdout = std.io.getStdOut().writer();
     //
