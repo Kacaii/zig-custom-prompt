@@ -12,13 +12,12 @@ pub fn init(allocator: Allocator, dir: std.fs.Dir) ![]const u8 {
     const real_path = try dir.realpathAlloc(allocator, ".");
     defer allocator.free(real_path);
 
-    // FIXME: It displays /home/kacaii/ when in the home directory.
     const parsed_path = try std.mem.replaceOwned(
         u8,
         allocator,
         real_path,
-        "/home/kacaii/",
-        "~/",
+        "/home/kacaii",
+        "~",
     );
     defer allocator.free(parsed_path);
 
