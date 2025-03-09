@@ -14,6 +14,7 @@ const Tags = enum {
     default_workspace,
 };
 
+/// Returns the workspace section.
 /// Caller owns the memory
 pub fn init(allocator: Allocator, dir: fs.Dir) ![]const u8 {
     const workspace_tag: Tags = tag: {

@@ -3,7 +3,8 @@ const fs = std.fs;
 const builtin = @import("builtin");
 const Child = std.process.Child;
 
-const Workspace = @import("./sections/Workspace.zig");
+const WorkspaceSection = @import("./sections/WorkspaceSection.zig");
+const PathSection = @import("./sections/PathSection.zig");
 
 pub fn main() !void {
     const cwd = fs.cwd();
@@ -19,8 +20,13 @@ pub fn main() !void {
         _ = debug_allocator.deinit();
     };
 
-    const workspace_section = try Workspace.init(allocator, cwd);
+    // Path
+    const path_section = try PathSection.init(allocator, cwd);
+    defer allocator.free(path_section);
+
+    // Icon and Programming Language
+    const workspace_section = try WorkspaceSection.init(allocator, cwd);
     defer allocator.free(workspace_section);
 
-    _ = try stdout.print(" {s} \n 󰁕 ", .{workspace_section});
+    _ = try stdout.print(" {s} │ {s} \n 󰁕 ", .{ path_section, workspace_section });
 }
