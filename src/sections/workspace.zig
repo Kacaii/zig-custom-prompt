@@ -32,8 +32,11 @@ test getWorkspace {
 
 /// Caller owns the memory
 pub fn init(allocator: Allocator, w: WorkspaceTags) ![]const u8 {
-    switch (w) {
+    const workspace = try switch (w) {
         .zig => ZigWorkspace.init(allocator),
+        .deno => DenoWorkspace.init(allocator),
         .not_workspace => "not a workspace",
-    }
+    };
+
+    return workspace;
 }

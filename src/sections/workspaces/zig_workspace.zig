@@ -30,24 +30,15 @@ pub const ZigWorkspace = struct {
         defer allocator.free(zig_version_run.stdout);
         defer allocator.free(zig_version_run.stderr);
 
-        const zig_version_output = zig_version_run.stdout;
-        const zig_version = std.mem.trimRight(
-            u8,
-            zig_version_output,
-            "\n",
-        );
+        const zig_version = std.mem.trimRight(u8, zig_version_run.stdout, "\n");
 
-        const zig_section = try std.mem.concat(
-            allocator,
-            u8,
-            &[_][]const u8{
-                set_color.yellow,
-                "[ Zig ",
-                zig_version,
-                "]",
-                set_color.normal,
-            },
-        );
+        const zig_section = try std.mem.concat(allocator, u8, &[_][]const u8{
+            set_color.yellow,
+            "[ Zig ",
+            zig_version,
+            "]",
+            set_color.normal,
+        });
         return zig_section;
     }
 };
@@ -60,4 +51,20 @@ test " detect zig root" {
     defer temp_file.close();
 
     try testing.expect(ZigWorkspace.checkRoot(tempdir.dir) == true);
+}
+
+test " prints correct information" {
+    var alloc = testing.allocator;
+
+    var tempdir = testing.tmpDir(.{});
+    defer tempdir.cleanup();
+
+    const temp_file = try tempdir.dir.createFile(ZigWorkspace.root_file, .{});
+    defer temp_file.close();
+
+    const output = try ZigWorkspace.init(alloc);
+    defer alloc.free(output);
+
+    // HACK: This needs to be updated manually
+    try testing.expectEqualStrings("\x1b[33m[ Zig 0.14.0]\x1b[39m", output);
 }
