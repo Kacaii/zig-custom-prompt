@@ -8,6 +8,8 @@ const DefaultWorkspace = @import("./workspaces/default_workspace.zig").DefaultWo
 
 const Allocator = std.mem.Allocator;
 
+// TEST: What if you make a union(enum) for polymorphism?  https://youtu.be/qJNHUIIFMlo
+
 const Tags = enum {
     zig,
     deno,
