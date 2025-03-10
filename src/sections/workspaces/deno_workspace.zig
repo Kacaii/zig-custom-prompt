@@ -64,5 +64,5 @@ test " print correct information" {
     defer alloc.free(output);
 
     // HACK: This needs to be updated manually
-    try testing.expectEqualStrings("\x1b[32m[ deno 2.1.10]\x1b[39m", output);
+    try testing.expectEqualStrings("\x1b[32m[ deno 2.2.3]\x1b[39m", output);
 }
