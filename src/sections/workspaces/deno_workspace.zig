@@ -50,19 +50,3 @@ test " detect deno root" {
 
     try testing.expect(DenoWorkspace.checkRoot(tempdir.dir) == true);
 }
-
-test " print correct information" {
-    var alloc = testing.allocator;
-
-    var tempdir = testing.tmpDir(.{});
-    defer tempdir.cleanup();
-
-    const temp_file = try tempdir.dir.createFile(DenoWorkspace.root_file, .{});
-    defer temp_file.close();
-
-    const output = try DenoWorkspace.init(alloc);
-    defer alloc.free(output);
-
-    // HACK: This needs to be updated manually
-    try testing.expectEqualStrings("\x1b[32m[ deno 2.2.3]\x1b[39m", output);
-}

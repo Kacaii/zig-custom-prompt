@@ -47,19 +47,3 @@ test " detect zig root" {
 
     try testing.expect(ZigWorkspace.checkRoot(tempdir.dir) == true);
 }
-
-test " print correct information" {
-    var alloc = testing.allocator;
-
-    var tempdir = testing.tmpDir(.{});
-    defer tempdir.cleanup();
-
-    const temp_file = try tempdir.dir.createFile(ZigWorkspace.root_file, .{});
-    defer temp_file.close();
-
-    const output = try ZigWorkspace.init(alloc);
-    defer alloc.free(output);
-
-    // HACK: This needs to be updated manually
-    try testing.expectEqualStrings("\x1b[33m[ Zig 0.14.0]\x1b[39m", output);
-}
