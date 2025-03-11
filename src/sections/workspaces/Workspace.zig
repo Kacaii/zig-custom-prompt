@@ -29,8 +29,11 @@ test "Test functionality" {
     defer temp_file.close();
 
     const ws = Workspace{ .zig = Zig{} };
+
     const actual = try ws.init(alloc);
 
     defer alloc.free(actual);
+
+    try std.testing.expect(ws.checkRoot(tempdir.dir));
     try std.testing.expectStringStartsWith(actual, "\x1b[33m[");
 }

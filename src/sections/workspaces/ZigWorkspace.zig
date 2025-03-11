@@ -8,10 +8,9 @@ const set_color = struct {
 };
 
 pub const Zig = struct {
-    const root_file = "build.zig";
-
     pub fn checkRoot(self: Zig, dir: std.fs.Dir) bool {
-        if (dir.access(self.root_file, .{ .mode = .read_only })) |_| return true else |_| return false;
+        _ = self;
+        if (dir.access("build.zig", .{ .mode = .read_only })) |_| return true else |_| return false;
     }
 
     pub fn init(self: Zig, allocator: Allocator) ![]const u8 {
