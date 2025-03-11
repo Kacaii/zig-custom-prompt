@@ -1,6 +1,5 @@
 const std = @import("std");
 const Child = std.process.Child;
-const Allocator = std.mem.Allocator;
 
 const set_color = struct {
     const yellow = "\x1b[33m";
@@ -8,12 +7,19 @@ const set_color = struct {
 };
 
 pub const Zig = struct {
-    pub fn checkRoot(self: Zig, dir: std.fs.Dir) bool {
+    const Self = @This();
+
+    /// Returns true if "build.zig" is found
+    pub fn checkRoot(self: Self, dir: std.fs.Dir) bool {
         _ = self;
-        if (dir.access("build.zig", .{ .mode = .read_only })) |_| return true else |_| return false;
+        if (dir.access(
+            "build.zig",
+            .{ .mode = .read_only },
+        )) |_| return true else |_| return false;
     }
 
-    pub fn init(self: Zig, allocator: Allocator) ![]const u8 {
+    /// Caller owns the memory
+    pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
         _ = self;
 
         const zig_version_cmd = try Child.run(.{
