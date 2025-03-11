@@ -29,5 +29,5 @@ pub fn main() !void {
     defer allocator.free(workspace_section);
 
     //TODO: Make and arrow section so you can customize the color.
-    _ = try stdout.print(" {s} | {s} \n 󰁕 ", .{ workspace_section, path_section });
+    _ = try stdout.print(" {s} | {s} \n  ", .{ workspace_section, path_section });
 }

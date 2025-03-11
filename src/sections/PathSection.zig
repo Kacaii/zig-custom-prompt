@@ -17,7 +17,7 @@ pub fn init(allocator: Allocator, dir: std.fs.Dir) ![]const u8 {
         allocator,
         real_path,
         "/home/kacaii",
-        "~",
+        " ",
     );
     defer allocator.free(parsed_path);
 
