@@ -3,9 +3,9 @@
 
 const std = @import("std");
 
-const Zig = @import("./Zig.zig").Zig;
-const Deno = @import("./Deno.zig").Deno;
-const Default = @import("./Default.zig").Default;
+const Zig = @import("./Zig.zig");
+const Deno = @import("./Deno.zig");
+const Default = @import("./Default.zig");
 
 pub const Workspace = union(enum) {
     zig: Zig,
