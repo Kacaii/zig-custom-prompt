@@ -9,7 +9,6 @@ const Default = @import("./workspaces/Default.zig").Default;
 pub fn init(allocator: std.mem.Allocator, dir: std.fs.Dir) ![]const u8 {
     const workspaces = [_]Workspace{
         .{ .zig = Zig{} },
-        .{ .default = Default{} },
         .{ .deno = Deno{} },
     };
 
