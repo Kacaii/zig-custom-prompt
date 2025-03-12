@@ -1,9 +1,9 @@
 const std = @import("std");
 
 const Workspace = @import("./workspaces/Workspace.zig").Workspace;
-const Zig = @import("./workspaces/Zig.zig").Zig;
-const Deno = @import("./workspaces/Deno.zig").Deno;
-const Default = @import("./workspaces/Default.zig").Default;
+const Zig = @import("./workspaces/Zig.zig");
+const Deno = @import("./workspaces/Deno.zig");
+const Default = @import("./workspaces/Default.zig");
 
 /// Caller owns the memory
 pub fn init(allocator: std.mem.Allocator, dir: std.fs.Dir) ![]const u8 {
