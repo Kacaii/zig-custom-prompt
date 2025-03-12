@@ -6,10 +6,12 @@ const std = @import("std");
 const Zig = @import("./Zig.zig");
 const Deno = @import("./Deno.zig");
 const Default = @import("./Default.zig");
+const Go = @import("./Go.zig");
 
 pub const Workspace = union(enum) {
     zig: Zig,
     deno: Deno,
+    go: Go,
     default: Default,
 
     pub fn init(self: Workspace, allocator: std.mem.Allocator) ![]const u8 {
@@ -72,4 +74,22 @@ test " default workspace" {
     defer alloc.free(actual);
 
     try std.testing.expectEqualStrings("\x1b[95m[]\x1b[39m", actual);
+}
+
+test " go workspace" {
+    const alloc = std.testing.allocator;
+
+    var tempdir = std.testing.tmpDir(.{});
+    defer tempdir.cleanup();
+
+    const temp_file = try tempdir.dir.createFile("go.mod", .{});
+    defer temp_file.close();
+
+    const ws: Workspace = .{ .go = Go{} };
+
+    const actual = try ws.init(alloc);
+    defer alloc.free(actual);
+
+    try std.testing.expect(ws.checkRoot(tempdir.dir));
+    try std.testing.expectStringStartsWith(actual, "\x1b[33m[");
 }
