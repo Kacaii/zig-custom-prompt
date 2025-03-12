@@ -38,7 +38,7 @@ test " zig workspace" {
     const temp_file = try tempdir.dir.createFile("build.zig", .{});
     defer temp_file.close();
 
-    const ws: Workspace = .{ .zig = Zig{} };
+    const ws: Workspace = .{ .zig = .{} };
 
     const actual = try ws.init(alloc);
     defer alloc.free(actual);
@@ -56,7 +56,7 @@ test " deno workspace" {
     const temp_file = try tempdir.dir.createFile("deno.json", .{});
     defer temp_file.close();
 
-    const ws: Workspace = .{ .deno = Deno{} };
+    const ws: Workspace = .{ .deno = .{} };
 
     const actual = try ws.init(alloc);
     defer alloc.free(actual);
@@ -71,7 +71,7 @@ test " default workspace" {
     var tempdir = std.testing.tmpDir(.{});
     defer tempdir.cleanup();
 
-    const ws: Workspace = .{ .default = Default{} };
+    const ws: Workspace = .{ .default = .{} };
     const actual = try ws.init(alloc);
     defer alloc.free(actual);
 
@@ -87,7 +87,7 @@ test " go workspace" {
     const temp_file = try tempdir.dir.createFile("go.mod", .{});
     defer temp_file.close();
 
-    const ws: Workspace = .{ .go = Go{} };
+    const ws: Workspace = .{ .go = .{} };
 
     const actual = try ws.init(alloc);
     defer alloc.free(actual);
@@ -105,7 +105,7 @@ test " node workspace" {
     const temp_file = try tempdir.dir.createFile("package.json", .{});
     defer temp_file.close();
 
-    const ws: Workspace = .{ .node = Node{} };
+    const ws: Workspace = .{ .node = .{} };
 
     const actual = try ws.init(alloc);
     defer alloc.free(actual);
