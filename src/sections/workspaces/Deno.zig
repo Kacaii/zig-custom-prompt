@@ -30,8 +30,8 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     defer allocator.free(deno_version_cmd.stderr);
 
     const deno_version_first_line = std.mem.trimRight(u8, deno_version_cmd.stdout, "\n");
-    const index_of_parenthesis = std.mem.indexOf(u8, deno_version_first_line, "(");
-    const deno_version = deno_version_first_line[0 .. index_of_parenthesis.? - 1];
+    const needle_index = std.mem.indexOf(u8, deno_version_first_line, "(");
+    const deno_version = deno_version_first_line[0 .. needle_index.? - 1];
 
     const deno_section = try std.mem.concat(
         allocator,

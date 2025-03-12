@@ -3,16 +3,18 @@
 
 const std = @import("std");
 
-const Zig = @import("./Zig.zig");
-const Deno = @import("./Deno.zig");
 const Default = @import("./Default.zig");
+const Deno = @import("./Deno.zig");
 const Go = @import("./Go.zig");
+const Node = @import("./NodeJS.zig");
+const Zig = @import("./Zig.zig");
 
 pub const Workspace = union(enum) {
-    zig: Zig,
+    default: Default,
     deno: Deno,
     go: Go,
-    default: Default,
+    node: Node,
+    zig: Zig,
 
     pub fn init(self: Workspace, allocator: std.mem.Allocator) ![]const u8 {
         switch (self) {
@@ -91,5 +93,23 @@ test " go workspace" {
     defer alloc.free(actual);
 
     try std.testing.expect(ws.checkRoot(tempdir.dir));
-    try std.testing.expectStringStartsWith(actual, "\x1b[33m[");
+    try std.testing.expectStringStartsWith(actual, "\x1b[36m[");
+}
+
+test " node workspace" {
+    const alloc = std.testing.allocator;
+
+    var tempdir = std.testing.tmpDir(.{});
+    defer tempdir.cleanup();
+
+    const temp_file = try tempdir.dir.createFile("package.json", .{});
+    defer temp_file.close();
+
+    const ws: Workspace = .{ .node = Node{} };
+
+    const actual = try ws.init(alloc);
+    defer alloc.free(actual);
+
+    try std.testing.expect(ws.checkRoot(tempdir.dir));
+    try std.testing.expectStringStartsWith(actual, "\x1b[32m[");
 }
