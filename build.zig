@@ -100,7 +100,7 @@ pub fn build(b: *std.Build) void {
     });
 
     const workspace_section_mod = b.createModule(.{
-        .root_source_file = b.path("src/sections/workspaces/Workspace.zig"),
+        .root_source_file = b.path("src/sections/WorkspaceSection.zig"),
         .target = target,
         .optimize = optimize,
     });
