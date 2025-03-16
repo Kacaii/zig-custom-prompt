@@ -29,13 +29,13 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     defer allocator.free(zig_version_cmd.stdout);
     defer allocator.free(zig_version_cmd.stderr);
 
-    const zig_version = std.mem.trimRight(u8, zig_version_cmd.stdout, "\n");
+    const version = std.mem.trimRight(u8, zig_version_cmd.stdout, "\n");
 
-    const zig_section = try std.mem.concat(
+    const section = try std.fmt.allocPrint(
         allocator,
-        u8,
-        &[_][]const u8{ set_color.yellow, "[ Zig ", zig_version, "]", set_color.normal },
+        "{s}[ {s}]{s}",
+        .{ set_color.yellow, version, set_color.normal },
     );
 
-    return zig_section;
+    return section;
 }

@@ -19,10 +19,10 @@ pub fn checkRoot(self: Self, dir: std.fs.Dir) bool {
 pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     _ = self;
 
-    const default_section = std.mem.concat(
+    const default_section = std.fmt.allocPrint(
         allocator,
-        u8,
-        &[_][]const u8{ set_color.magenta, "[]", set_color.normal },
+        "{s}[{s}]{s}",
+        .{ set_color.magenta, "", set_color.normal },
     );
 
     return default_section;

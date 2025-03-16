@@ -29,21 +29,17 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     defer allocator.free(go_version_cmd.stdout);
     defer allocator.free(go_version_cmd.stderr);
 
-    const go_version = blk: {
-        const needle_index = std.mem.indexOf(
-            u8,
-            go_version_cmd.stdout,
-            "l",
-        );
+    const version = blk: {
+        const needle_index = std.mem.indexOf(u8, go_version_cmd.stdout, "l");
 
         break :blk go_version_cmd.stdout[13 .. needle_index.? - 1];
     };
 
-    const go_section = try std.mem.concat(
+    const section = try std.fmt.allocPrint(
         allocator,
-        u8,
-        &[_][]const u8{ set_color.cyan, "[ Go ", go_version, "]", set_color.normal },
+        "{s}[ {s}]{s}",
+        .{ set_color.cyan, version, set_color.normal },
     );
 
-    return go_section;
+    return section;
 }

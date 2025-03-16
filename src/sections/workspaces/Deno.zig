@@ -29,15 +29,18 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     defer allocator.free(deno_version_cmd.stdout);
     defer allocator.free(deno_version_cmd.stderr);
 
-    const deno_version_first_line = std.mem.trimRight(u8, deno_version_cmd.stdout, "\n");
-    const needle_index = std.mem.indexOf(u8, deno_version_first_line, "(");
-    const deno_version = deno_version_first_line[0 .. needle_index.? - 1];
+    const version = blk: {
+        const deno_version_first_line = std.mem.trimRight(u8, deno_version_cmd.stdout, "\n");
+        const needle_index = std.mem.indexOf(u8, deno_version_first_line, "(");
 
-    const deno_section = try std.mem.concat(
+        break :blk deno_version_first_line[0 .. needle_index.? - 1];
+    };
+
+    const section = try std.fmt.allocPrint(
         allocator,
-        u8,
-        &[_][]const u8{ set_color.green, "[ ", deno_version, "]", set_color.normal },
+        "{s}[ {s}]{s}",
+        .{ set_color.green, version, set_color.normal },
     );
 
-    return deno_section;
+    return section;
 }

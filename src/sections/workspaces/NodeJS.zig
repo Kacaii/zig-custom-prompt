@@ -29,13 +29,13 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     defer allocator.free(node_version_cmd.stdout);
     defer allocator.free(node_version_cmd.stderr);
 
-    const node_version = std.mem.trimRight(u8, node_version_cmd.stdout, "\n");
+    const version = std.mem.trimRight(u8, node_version_cmd.stdout, "\n");
 
-    const node_section = try std.mem.concat(
+    const section = std.fmt.allocPrint(
         allocator,
-        u8,
-        &[_][]const u8{ set_color.green, "[ NodeJS ", node_version, "]", set_color.normal },
+        "{s}[ {s}]{s}",
+        .{ set_color.green, version, set_color.normal },
     );
 
-    return node_section;
+    return section;
 }
