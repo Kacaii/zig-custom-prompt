@@ -21,9 +21,10 @@ pub fn checkRoot(self: Self, dir: std.fs.Dir) bool {
 pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     _ = self;
 
+    const argv = [_][]const u8{ "zig", "version" };
     const zig_version_cmd = try Child.run(.{
         .allocator = allocator,
-        .argv = &[_][]const u8{ "zig", "version" },
+        .argv = &argv,
     });
 
     defer allocator.free(zig_version_cmd.stdout);
