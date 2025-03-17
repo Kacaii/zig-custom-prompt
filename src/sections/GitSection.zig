@@ -11,6 +11,7 @@ const GitData = struct {
 
     is_repo: bool,
     branch: []const u8,
+    root: []const u8,
 
     // Caller owns the memory
     fn init(allocator: Allocator) !*Self {
@@ -34,18 +35,37 @@ const GitData = struct {
             break :blk try allocator.dupe(u8, first_line[10..]);
         };
 
+        const git_root_argv = [_][]const u8{ "git", "rev-parse", "--show-toplevel" };
+        const git_root_cmd = try std.process.Child.run(.{
+            .allocator = allocator,
+            .argv = &git_root_argv,
+        });
+
+        defer allocator.free(git_root_cmd.stdout);
+        defer allocator.free(git_root_cmd.stderr);
+
+        const root = blk: {
+            if (!is_repo) break :blk "";
+
+            // BUG: Need to remove the linebreak.
+            break :blk try allocator.dupe(u8, git_root_cmd.stdout);
+        };
+
         const git_data = try allocator.create(GitData);
         git_data.* = Self{
             .is_repo = is_repo,
             .branch = branch,
+            .root = root,
         };
 
         return git_data;
     }
 
     pub fn deinit(self: *Self, allocator: Allocator) void {
+        defer allocator.destroy(self);
+
         allocator.free(self.branch);
-        allocator.destroy(self);
+        allocator.free(self.root);
     }
 };
 
@@ -59,7 +79,7 @@ pub fn init(allocator: Allocator) ![]const u8 {
     const section = try std.fmt.allocPrint(
         allocator,
         "on {s}{s} {s}{s}",
-        .{ set_color.red, "", git_status.branch, set_color.normal },
+        .{ set_color.red, "", git_status.root, set_color.normal },
     );
 
     return section;
