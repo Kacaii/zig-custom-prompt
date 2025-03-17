@@ -1,9 +1,9 @@
 const std = @import("std");
 const Allocator = std.mem.Allocator;
 
-const set_color = struct {
+const set_mode = struct {
     const dim = "\x1b[2m";
-    const normal = "\x1b[39m";
+    const normal = "\x1b[0m";
 };
 
 /// Returns the path for the current working directory.
@@ -15,7 +15,7 @@ pub fn init(allocator: Allocator, dir: std.fs.Dir) ![]const u8 {
     const section = try std.fmt.allocPrint(
         allocator,
         "{s}{s}{s}",
-        .{ set_color.dim, path, set_color.normal },
+        .{ set_mode.dim, path, set_mode.normal },
     );
 
     return section;
