@@ -6,6 +6,7 @@ const builtin = @import("builtin");
 const HostSection = @import("./sections/HostSection.zig");
 const PathSection = @import("./sections/PathSection.zig");
 const WorkspaceSection = @import("./sections/WorkspaceSection.zig");
+const GitSection = @import("./sections/GitSection.zig");
 
 pub fn main() !void {
     const cwd = fs.cwd();
@@ -21,17 +22,22 @@ pub fn main() !void {
         _ = debug_allocator.deinit();
     };
 
+    // Host name
     const host_section = try HostSection.init(allocator);
     defer allocator.free(host_section);
-
-    // Path
-    const path_section = try PathSection.init(allocator, cwd);
-    defer allocator.free(path_section);
 
     // Icon and Programming Language
     const workspace_section = try WorkspaceSection.init(allocator, cwd);
     defer allocator.free(workspace_section);
 
-    //TODO: Make and arrow section so you can customize the color.
-    _ = try stdout.print(" {s} | {s} | {s} \n  ", .{ host_section, workspace_section, path_section });
+    // Git Branch
+    const git_section = try GitSection.init(allocator);
+    defer allocator.free(git_section);
+
+    // Path
+    const path_section = try PathSection.init(allocator, cwd);
+    defer allocator.free(path_section);
+
+    // TODO: Make and arrow section so you can customize the color.
+    _ = try stdout.print(" {s} | {s} | {s} | {s} \n  ", .{ host_section, workspace_section, git_section, path_section });
 }
