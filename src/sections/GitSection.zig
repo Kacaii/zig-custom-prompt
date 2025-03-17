@@ -6,7 +6,7 @@ const set_color = struct {
     const normal = "\x1b[39m";
 };
 
-const GitStatus = struct {
+const GitData = struct {
     const Self = @This();
 
     is_repo: bool,
@@ -14,10 +14,10 @@ const GitStatus = struct {
 
     // Caller owns the memory
     fn init(allocator: Allocator) !*Self {
-        const argv = [_][]const u8{ "git", "status" };
+        const git_status_arv = [_][]const u8{ "git", "status" };
         const git_status_cmd = try std.process.Child.run(.{
             .allocator = allocator,
-            .argv = &argv,
+            .argv = &git_status_arv,
         });
 
         defer allocator.free(git_status_cmd.stdout);
@@ -34,16 +34,16 @@ const GitStatus = struct {
             break :blk try allocator.dupe(u8, first_line[10..]);
         };
 
-        const git_status = try allocator.create(GitStatus);
-        git_status.* = Self{
+        const git_data = try allocator.create(GitData);
+        git_data.* = Self{
             .is_repo = is_repo,
             .branch = branch,
         };
 
-        return git_status;
+        return git_data;
     }
 
-    fn deinit(self: *Self, allocator: Allocator) void {
+    pub fn deinit(self: *Self, allocator: Allocator) void {
         allocator.free(self.branch);
         allocator.destroy(self);
     }
@@ -51,7 +51,7 @@ const GitStatus = struct {
 
 // Caller owns the memory
 pub fn init(allocator: Allocator) ![]const u8 {
-    const git_status = try GitStatus.init(allocator);
+    const git_status = try GitData.init(allocator);
     defer git_status.deinit(allocator);
 
     if (!git_status.is_repo) return "";
