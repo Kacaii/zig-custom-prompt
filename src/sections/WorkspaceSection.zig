@@ -38,7 +38,7 @@ test " zig workspace" {
     defer alloc.free(actual);
 
     try std.testing.expect(ws.checkRoot(tempdir.dir));
-    try std.testing.expectStringStartsWith(actual, "\x1b[33m[");
+    try std.testing.expectStringStartsWith(actual, "\x1b[33m");
 }
 
 test " deno workspace" {
@@ -56,7 +56,7 @@ test " deno workspace" {
     defer alloc.free(actual);
 
     try std.testing.expect(ws.checkRoot(tempdir.dir));
-    try std.testing.expectStringStartsWith(actual, "\x1b[32m[");
+    try std.testing.expectStringStartsWith(actual, "\x1b[32m");
 }
 
 test " default workspace" {
@@ -69,7 +69,7 @@ test " default workspace" {
     const actual = try ws.init(alloc);
     defer alloc.free(actual);
 
-    try std.testing.expectEqualStrings("\x1b[95m[]\x1b[39m", actual);
+    try std.testing.expectEqualStrings("\x1b[95m\x1b[39m", actual);
 }
 
 test " go workspace" {
@@ -87,7 +87,7 @@ test " go workspace" {
     defer alloc.free(actual);
 
     try std.testing.expect(ws.checkRoot(tempdir.dir));
-    try std.testing.expectStringStartsWith(actual, "\x1b[36m[");
+    try std.testing.expectStringStartsWith(actual, "\x1b[36m");
 }
 
 test " node workspace" {
@@ -105,5 +105,5 @@ test " node workspace" {
     defer alloc.free(actual);
 
     try std.testing.expect(ws.checkRoot(tempdir.dir));
-    try std.testing.expectStringStartsWith(actual, "\x1b[32m[");
+    try std.testing.expectStringStartsWith(actual, "\x1b[32m");
 }

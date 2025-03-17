@@ -21,8 +21,8 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
 
     const default_section = std.fmt.allocPrint(
         allocator,
-        "{s}[{s}]{s}",
-        .{ set_color.magenta, "", set_color.normal },
+        "{s}{s}{s}",
+        .{ set_color.magenta, "", set_color.normal },
     );
 
     return default_section;

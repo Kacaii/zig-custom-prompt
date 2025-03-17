@@ -30,11 +30,11 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     defer allocator.free(node_version_cmd.stdout);
     defer allocator.free(node_version_cmd.stderr);
 
-    const version = std.mem.trimRight(u8, node_version_cmd.stdout, "\n");
+    const version = std.mem.trimRight(u8, node_version_cmd.stdout[1..], "\n");
 
     const section = std.fmt.allocPrint(
         allocator,
-        "{s}[ {s}]{s}",
+        "{s} {s}{s}",
         .{ set_color.green, version, set_color.normal },
     );
 

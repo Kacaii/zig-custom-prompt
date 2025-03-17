@@ -34,12 +34,12 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
         const deno_version_first_line = std.mem.trimRight(u8, deno_version_cmd.stdout, "\n");
         const needle_index = std.mem.indexOf(u8, deno_version_first_line, "(");
 
-        break :blk deno_version_first_line[0 .. needle_index.? - 1];
+        break :blk deno_version_first_line[5 .. needle_index.? - 1];
     };
 
     const section = try std.fmt.allocPrint(
         allocator,
-        "{s}[ {s}]{s}",
+        "{s} {s}{s}",
         .{ set_color.green, version, set_color.normal },
     );
 

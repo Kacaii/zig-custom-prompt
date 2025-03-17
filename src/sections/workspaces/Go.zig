@@ -38,7 +38,7 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
 
     const section = try std.fmt.allocPrint(
         allocator,
-        "{s}[ {s}]{s}",
+        "{s} {s}{s}",
         .{ set_color.cyan, version, set_color.normal },
     );
 

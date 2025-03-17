@@ -40,7 +40,7 @@ pub fn main() !void {
 
     // TODO: Make and arrow section so you can customize the color.
     _ = try stdout.print(
-        " {s} | {s} | {s} | {s} \n  ",
+        " {s} │ {s} {s} {s} \n  ",
         .{ host_section, workspace_section, git_section, path_section },
     );
 }

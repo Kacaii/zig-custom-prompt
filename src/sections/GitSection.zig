@@ -12,7 +12,7 @@ pub fn init(allocator: Allocator) ![]const u8 {
 
     const section = try std.fmt.allocPrint(
         allocator,
-        "{s}{s}{s}",
+        "on {s}{s}{s}",
         .{ set_color.red, "", set_color.normal },
     );
 
