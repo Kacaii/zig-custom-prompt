@@ -35,4 +35,6 @@ fn isGitRepo(allocator: Allocator) !bool {
     };
 }
 
+// TODO: Detect git branch
+// TODO: Detect git dirty
 // TODO: Add tests
