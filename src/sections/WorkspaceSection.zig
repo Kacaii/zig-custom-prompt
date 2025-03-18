@@ -12,7 +12,7 @@ pub fn init(allocator: std.mem.Allocator, dir: std.fs.Dir) ![]const u8 {
     };
 
     for (workspaces) |ws| {
-        if (ws.checkRoot(dir)) {
+        if (try ws.checkRoot(allocator, dir)) {
             const section = try ws.init(allocator);
             return section;
         }
@@ -23,6 +23,7 @@ pub fn init(allocator: std.mem.Allocator, dir: std.fs.Dir) ![]const u8 {
     return section;
 }
 
+// TEST: Update tests! Root directory needs to be a git repository
 test " zig workspace" {
     const alloc = std.testing.allocator;
 

@@ -6,7 +6,7 @@ const set_color = struct {
     const normal = "\x1b[39m";
 };
 
-const GitData = struct {
+pub const GitData = struct {
     const Self = @This();
 
     is_repo: bool,
@@ -14,7 +14,7 @@ const GitData = struct {
     root: []const u8,
 
     // Caller owns the memory
-    fn init(allocator: Allocator) !*Self {
+    pub fn init(allocator: Allocator) !*Self {
         const git_status_arv = [_][]const u8{ "git", "status" };
         const git_status_cmd = try std.process.Child.run(.{
             .allocator = allocator,
@@ -46,9 +46,8 @@ const GitData = struct {
 
         const root = blk: {
             if (!is_repo) break :blk "";
-
-            // BUG: Need to remove the linebreak.
-            break :blk try allocator.dupe(u8, git_root_cmd.stdout);
+            const parsed = std.mem.trimRight(u8, git_root_cmd.stdout, "\n");
+            break :blk try allocator.dupe(u8, parsed);
         };
 
         const git_data = try allocator.create(GitData);
@@ -61,6 +60,7 @@ const GitData = struct {
         return git_data;
     }
 
+    // Free allocated resources
     pub fn deinit(self: *Self, allocator: Allocator) void {
         defer allocator.destroy(self);
 
@@ -79,7 +79,7 @@ pub fn init(allocator: Allocator) ![]const u8 {
     const section = try std.fmt.allocPrint(
         allocator,
         "on {s}{s} {s}{s}",
-        .{ set_color.red, "", git_status.root, set_color.normal },
+        .{ set_color.red, "", git_status.branch, set_color.normal },
     );
 
     return section;

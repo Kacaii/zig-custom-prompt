@@ -1,6 +1,8 @@
 const std = @import("std");
 const Child = std.process.Child;
 
+const GitData = @import("../GitSection.zig").GitData;
+
 const set_color = struct {
     const magenta = "\x1b[95m";
     const normal = "\x1b[39m";
@@ -8,8 +10,10 @@ const set_color = struct {
 
 const Self = @This();
 
-pub fn checkRoot(self: Self, dir: std.fs.Dir) bool {
+/// Always returns true, doest allocate anything.
+pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) bool {
     _ = self;
+    _ = allocator;
     _ = dir;
 
     return true;

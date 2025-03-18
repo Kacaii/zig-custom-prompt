@@ -22,9 +22,9 @@ pub const Workspace = union(enum) {
         }
     }
 
-    pub fn checkRoot(self: Workspace, dir: std.fs.Dir) bool {
+    pub fn checkRoot(self: Workspace, allocator: std.mem.Allocator, dir: std.fs.Dir) !bool {
         switch (self) {
-            inline else => |w| return w.checkRoot(dir),
+            inline else => |w| return w.checkRoot(allocator, dir),
         }
     }
 };
