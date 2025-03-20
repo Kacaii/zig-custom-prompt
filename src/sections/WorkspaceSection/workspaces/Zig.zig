@@ -17,6 +17,7 @@ pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !boo
     const git_data = try GitData.init(allocator);
     defer git_data.deinit(allocator);
 
+    //
     if (!git_data.is_repo) return false;
 
     var git_root_dir = try dir.openDir(git_data.root, .{});
