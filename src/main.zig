@@ -6,7 +6,7 @@ const builtin = @import("builtin");
 const HostSection = @import("./sections/HostSection.zig");
 const PathSection = @import("./sections/PathSection.zig");
 const WorkspaceSection = @import("./sections/WorkspaceSection/WorkspaceSection.zig");
-const GitSection = @import("./sections/GitSection.zig");
+const GitSection = @import("./sections/WorkspaceSection/GitSection.zig");
 
 pub fn main() !void {
     const cwd = fs.cwd();
