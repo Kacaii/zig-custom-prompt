@@ -3,11 +3,11 @@
 
 const std = @import("std");
 
-const Default = @import("./Default.zig");
-const Deno = @import("./Deno.zig");
-const Go = @import("./Go.zig");
-const Node = @import("./NodeJS.zig");
-const Zig = @import("./Zig.zig");
+const Default = @import("./workspaces/Default.zig");
+const Deno = @import("./workspaces/Deno.zig");
+const Go = @import("./workspaces/Go.zig");
+const Node = @import("./workspaces/NodeJS.zig");
+const Zig = @import("./workspaces/Zig.zig");
 
 pub const Workspace = union(enum) {
     default: Default,

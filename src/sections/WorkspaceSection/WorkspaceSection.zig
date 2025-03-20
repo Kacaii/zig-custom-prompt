@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const Workspace = @import("./workspaces/Workspace.zig").Workspace;
+const Workspace = @import("./Workspace.zig").Workspace;
 
 /// Caller owns the memory
 pub fn init(allocator: std.mem.Allocator, dir: std.fs.Dir) ![]const u8 {
