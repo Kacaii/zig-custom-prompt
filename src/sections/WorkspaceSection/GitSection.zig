@@ -82,7 +82,9 @@ pub const GitData = struct {
     }
 };
 
-// Caller owns the memory
+/// Returns the branch name and current git dirty status.
+/// Returns an empty string if no repository is detected.
+/// Caller owns the memory
 pub fn init(allocator: Allocator) ![]const u8 {
     const git_status = try GitData.init(allocator);
     defer git_status.deinit(allocator);
