@@ -8,6 +8,8 @@ const set_color = struct {
     const normal = "\x1b[39m";
 };
 
+const root_file = "build.zig";
+
 const Self = @This();
 
 /// Returns true if "build.zig" is found
@@ -17,16 +19,24 @@ pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !boo
     const git_data = try GitData.init(allocator);
     defer git_data.deinit(allocator);
 
-    //
-    if (!git_data.is_repo) return false;
-
-    var git_root_dir = try dir.openDir(git_data.root, .{});
-    defer git_root_dir.close();
-
-    if (git_root_dir.access(
-        "build.zig",
+    // Check if "build.zig" is found in the current working directory
+    if (dir.access(
+        root_file,
         .{ .mode = .read_only },
-    )) |_| return true else |_| return false;
+    )) |_| return true else |_| {
+        // If the root file isnt in the current working directory,
+        // and you are not a git repository, return false.
+        if (!git_data.is_repo) return false;
+
+        // Check if "deno.json" is found in the git root directory
+        var git_root_dir = try dir.openDir(git_data.root, .{});
+        defer git_root_dir.close();
+
+        if (git_root_dir.access(
+            root_file,
+            .{ .mode = .read_only },
+        )) |_| return true else |_| return false;
+    }
 }
 
 /// Caller owns the memory

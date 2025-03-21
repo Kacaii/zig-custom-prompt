@@ -30,3 +30,14 @@ pub const Workspace = union(enum) {
         }
     }
 };
+
+test Workspace {
+    const allocator = std.testing.allocator;
+    var tmp_dir = std.testing.tmpDir(.{});
+    defer tmp_dir.cleanup();
+
+    _ = try tmp_dir.dir.createFile("deno.json", .{ .read = true });
+    const ws = Workspace{ .deno = .{} };
+
+    try std.testing.expect(try ws.checkRoot(allocator, tmp_dir.dir));
+}

@@ -25,6 +25,3 @@ pub fn init(allocator: std.mem.Allocator, dir: std.fs.Dir) ![]const u8 {
     const section = try default_ws.init(allocator);
     return section;
 }
-
-// TEST: Update tests! Root directory needs to be a git repository
-test " detect deno workspace" {}
