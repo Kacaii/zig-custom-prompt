@@ -1,7 +1,7 @@
 const std = @import("std");
 const Child = std.process.Child;
 
-const GitData = @import("../GitSection.zig").GitData;
+const GitData = @import("../GitData.zig");
 
 const set_color = struct {
     const green = "\x1b[32m";
