@@ -1,5 +1,5 @@
-//! This module is an interface that handles
-//! detecting what language you are using for your project.
+//! This module is an interface that handles the detection of
+//! the programming language being used on the current project.
 
 const std = @import("std");
 
@@ -17,6 +17,7 @@ pub const Workspace = union(enum) {
     zig: Zig,
 
     /// Returns the programming language being used on the current project, and its version.
+    /// Caller owns the memory.
     pub fn init(self: Workspace, allocator: std.mem.Allocator) ![]const u8 {
         switch (self) {
             inline else => |w| return w.init(allocator),
