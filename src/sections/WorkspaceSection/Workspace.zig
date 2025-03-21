@@ -37,8 +37,27 @@ test Workspace {
     var tmp_dir = std.testing.tmpDir(.{});
     defer tmp_dir.cleanup();
 
+    const path = try tmp_dir.dir.realpathAlloc(allocator, ".");
+    defer allocator.free(path);
+
+    var argv = [_][]const u8{ "git", "init" };
+    const git_init_cmd = try std.process.Child.run(.{
+        .allocator = allocator,
+        .argv = &argv,
+        .cwd = path,
+    });
+
+    defer allocator.free(git_init_cmd.stdout);
+    defer allocator.free(git_init_cmd.stderr);
+
     _ = try tmp_dir.dir.createFile("deno.json", .{ .read = true });
     const ws = Workspace{ .deno = .{} };
 
     try std.testing.expect(try ws.checkRoot(allocator, tmp_dir.dir));
+
+    const expected = "\x1b[32m";
+    const actual = try ws.init(allocator);
+    defer allocator.free(actual);
+
+    try std.testing.expectStringStartsWith(actual, expected);
 }
