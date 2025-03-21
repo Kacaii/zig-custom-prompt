@@ -1,3 +1,5 @@
+//! Handles gathering information about the current git repository.
+
 const std = @import("std");
 
 /// Wraps information about the current git repository.
