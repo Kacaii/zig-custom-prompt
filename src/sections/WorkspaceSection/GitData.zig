@@ -1,4 +1,4 @@
-//! Handles gathering information about the current git repository.
+//! Wraps information about the current git repository.
 
 const std = @import("std");
 
