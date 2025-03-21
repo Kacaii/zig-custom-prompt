@@ -16,12 +16,14 @@ pub const Workspace = union(enum) {
     node: Node,
     zig: Zig,
 
+    /// Returns the programming language being used on the current project, and its version.
     pub fn init(self: Workspace, allocator: std.mem.Allocator) ![]const u8 {
         switch (self) {
             inline else => |w| return w.init(allocator),
         }
     }
 
+    /// Returns true if a root file of any of the workspaces is detected.
     pub fn checkRoot(self: Workspace, allocator: std.mem.Allocator, dir: std.fs.Dir) !bool {
         switch (self) {
             inline else => |w| return w.checkRoot(allocator, dir),

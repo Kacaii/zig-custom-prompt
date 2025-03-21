@@ -1,20 +1,30 @@
+//! This module returns the current git branch and dirty status.
+
 const std = @import("std");
 const Allocator = std.mem.Allocator;
 
+/// Used for colorizing the output
 const set_color = struct {
     const red = "\x1b[31m";
     const normal = "\x1b[39m";
 };
 
+/// Wraps information about the current git repository.
 pub const GitData = struct {
     const Self = @This();
 
+    /// Current working branch.
     branch: []const u8,
+    /// Returns true if the current git repository is dirty.
     is_dirty: bool,
+    /// Returns true if a git repository is detected.
     is_repo: bool,
+    /// Root directory of the current git repository.
+    /// Returns an empty string if no repository is detected.
     root: []const u8,
 
-    // Caller owns the memory
+    /// Initializes a GitData struct.
+    /// Caller owns the memory.
     pub fn init(allocator: Allocator) !*Self {
         const git_status_arv = [_][]const u8{ "git", "status" };
         const git_status_cmd = try std.process.Child.run(.{
@@ -73,7 +83,8 @@ pub const GitData = struct {
         return git_data;
     }
 
-    // Free allocated resources
+    /// Deinitializes a GitData struct.
+    /// Frees the memory.
     pub fn deinit(self: *Self, allocator: Allocator) void {
         defer allocator.destroy(self);
 
@@ -95,7 +106,7 @@ pub fn init(allocator: Allocator) ![]const u8 {
 
     const section = try std.fmt.allocPrint(
         allocator,
-        "on {s}{s} {s}{s}{s}",
+        "on {s}{s} {s}{s}{s} ",
         .{ set_color.red, "", git_status.branch, is_dirty, set_color.normal },
     );
 

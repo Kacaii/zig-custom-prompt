@@ -1,3 +1,5 @@
+//! This module returns the current working directory.
+
 const std = @import("std");
 const Allocator = std.mem.Allocator;
 

@@ -1,9 +1,11 @@
+//! This module detects what programming language is being used on the current project.
+
 const std = @import("std");
 
 const Workspace = @import("./Workspace.zig").Workspace;
 
-/// Detects what programming language is being used on the current project.
-/// Caller owns the memory
+/// Returns the programming language being used on the current project, and its version.
+/// Caller owns the memory.
 pub fn init(allocator: std.mem.Allocator, dir: std.fs.Dir) ![]const u8 {
     const workspaces = [_]Workspace{
         .{ .zig = .{} },
