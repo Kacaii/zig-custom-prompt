@@ -23,19 +23,19 @@ pub fn main() !void {
     };
 
     // Host name
-    const host_section = try HostSection.init(allocator);
+    const host_section = HostSection.init(allocator) catch "";
     defer allocator.free(host_section);
 
     // Icon and Programming Language
-    const workspace_section = try WorkspaceSection.init(allocator, cwd);
+    const workspace_section = WorkspaceSection.init(allocator, cwd) catch "";
     defer allocator.free(workspace_section);
 
     // Git Branch
-    const git_section = try GitSection.init(allocator);
+    const git_section = GitSection.init(allocator) catch "";
     defer allocator.free(git_section);
 
     // Path
-    const path_section = try PathSection.init(allocator, cwd);
+    const path_section = PathSection.init(allocator, cwd) catch "";
     defer allocator.free(path_section);
 
     // TODO: Make and arrow section so you can customize the color.
