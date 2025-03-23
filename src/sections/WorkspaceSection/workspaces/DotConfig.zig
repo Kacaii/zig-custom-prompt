@@ -21,7 +21,7 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     return section;
 }
 
-/// Returns true if current directory is ".config"
+/// Returns true if current directory is "/home/user/.config"
 pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !bool {
     _ = self;
 
@@ -33,7 +33,7 @@ pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !boo
     var directories: std.ArrayListUnmanaged([]const u8) = .empty;
     defer directories.deinit(allocator);
 
-    _ = path_iter.first();
+    _ = path_iter.first(); // skip first
     while (path_iter.next()) |path_entry| {
         try directories.append(allocator, path_entry);
     }

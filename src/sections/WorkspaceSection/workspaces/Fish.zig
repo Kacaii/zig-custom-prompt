@@ -34,7 +34,7 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     return section;
 }
 
-/// Returns true if current directory is "fish"
+/// Returns true if current directory is "/home/user/.config/fish"
 pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !bool {
     _ = self;
 
@@ -43,19 +43,16 @@ pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !boo
 
     var path_iter = std.mem.splitScalar(u8, path, '/');
 
-    // /
-    _ = path_iter.first();
+    var directories: std.ArrayListUnmanaged([]const u8) = .empty;
+    defer directories.deinit(allocator);
 
-    // /home/
-    _ = path_iter.next();
+    _ = path_iter.first(); // skip first
+    while (path_iter.next()) |path_entry| {
+        try directories.append(allocator, path_entry);
+    }
 
-    // /home/user/
-    _ = path_iter.next();
+    const fish_directory = directories.items[3];
+    const is_fish_config = std.mem.eql(u8, fish_directory, root_file);
 
-    // /home/user/.config/
-    _ = path_iter.next();
-
-    // /home/user/.config/fish/
-    const fish_config_directory = path_iter.next().?;
-    return std.mem.eql(u8, fish_config_directory, root_file);
+    return is_fish_config;
 }
