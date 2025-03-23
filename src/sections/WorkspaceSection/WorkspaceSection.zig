@@ -14,6 +14,7 @@ pub fn init(allocator: std.mem.Allocator, dir: std.fs.Dir) ![]const u8 {
         .{ .node = .{} },
         .{ .dot_config = .{} },
         .{ .fish = .{} },
+        .{ .nvim = .{} },
     };
 
     for (workspaces) |ws| {

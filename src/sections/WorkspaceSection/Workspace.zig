@@ -10,6 +10,7 @@ const Node = @import("./workspaces/NodeJS.zig");
 const Zig = @import("./workspaces/Zig.zig");
 const DotConfig = @import("./workspaces/DotConfig.zig");
 const Fish = @import("./workspaces/Fish.zig");
+const Nvim = @import("./workspaces/Neovim.zig");
 
 pub const Workspace = union(enum) {
     default: Default,
@@ -19,6 +20,7 @@ pub const Workspace = union(enum) {
     zig: Zig,
     dot_config: DotConfig,
     fish: Fish,
+    nvim: Nvim,
 
     /// Returns the programming language being used on the current project, and its version.
     /// Caller owns the memory.
