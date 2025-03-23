@@ -30,21 +30,16 @@ pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !boo
 
     var path_iter = std.mem.splitScalar(u8, path, '/');
 
-    // /
+    var directories: std.ArrayListUnmanaged([]const u8) = .empty;
+    defer directories.deinit(allocator);
+
     _ = path_iter.first();
+    while (path_iter.next()) |path_entry| {
+        try directories.append(allocator, path_entry);
+    }
 
-    // /home/
-    _ = path_iter.next();
-
-    // /home/user/
-    _ = path_iter.next();
-
-    // /home/user/.config/
-    const config_directory = path_iter.next().?;
+    const config_directory = directories.items[2];
     const is_config = std.mem.eql(u8, config_directory, root_file);
 
-    // Checks if ".config" is the last entry in the path
-    const next_entry = path_iter.next();
-
-    return is_config and (next_entry == null);
+    return is_config and (directories.items.len == 3);
 }
