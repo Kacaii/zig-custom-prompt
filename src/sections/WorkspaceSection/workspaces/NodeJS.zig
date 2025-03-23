@@ -12,6 +12,8 @@ const root_file = "package.json";
 
 const Self = @This();
 
+// BUG: Is detecting the package.json in the home directory.
+
 /// Returns true if "package.json" is found
 pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !bool {
     _ = self;

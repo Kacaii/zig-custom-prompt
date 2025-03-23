@@ -9,6 +9,7 @@ const Go = @import("./workspaces/Go.zig");
 const Node = @import("./workspaces/NodeJS.zig");
 const Zig = @import("./workspaces/Zig.zig");
 const DotConfig = @import("./workspaces/DotConfig.zig");
+const Fish = @import("./workspaces/Fish.zig");
 
 pub const Workspace = union(enum) {
     default: Default,
@@ -17,6 +18,7 @@ pub const Workspace = union(enum) {
     node: Node,
     zig: Zig,
     dot_config: DotConfig,
+    fish: Fish,
 
     /// Returns the programming language being used on the current project, and its version.
     /// Caller owns the memory.

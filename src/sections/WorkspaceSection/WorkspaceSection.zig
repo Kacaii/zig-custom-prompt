@@ -13,6 +13,7 @@ pub fn init(allocator: std.mem.Allocator, dir: std.fs.Dir) ![]const u8 {
         .{ .go = .{} },
         .{ .node = .{} },
         .{ .dot_config = .{} },
+        .{ .fish = .{} },
     };
 
     for (workspaces) |ws| {

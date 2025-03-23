@@ -10,11 +10,14 @@ const root_file = ".config";
 
 const Self = @This();
 
-// Returns ""
+/// Caller owns the memory
 pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     _ = self;
 
-    const section = try std.fmt.allocPrint(allocator, "", .{});
+    const section = try std.fmt.allocPrint(allocator, "{s}{s}", .{
+        set_color.blue,
+        set_color.normal,
+    });
     return section;
 }
 
@@ -36,6 +39,12 @@ pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !boo
     // /home/user/
     _ = path_iter.next();
 
+    // /home/user/.config/
     const config_directory = path_iter.next().?;
-    return std.mem.eql(u8, config_directory, root_file);
+    const is_config = std.mem.eql(u8, config_directory, root_file);
+
+    // Checks if ".config" is the last entry in the path
+    const next_entry = path_iter.next();
+
+    return is_config and (next_entry == null);
 }
