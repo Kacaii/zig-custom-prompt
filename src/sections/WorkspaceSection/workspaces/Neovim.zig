@@ -24,8 +24,8 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     defer allocator.free(nvim_version_cmd.stderr);
 
     const version = blk: {
-        var stdout_iter = std.mem.splitScalar(u8, nvim_version_cmd.stdout, '\n');
-        const first_line = stdout_iter.first();
+        var iter = std.mem.tokenizeScalar(u8, nvim_version_cmd.stdout, '\n');
+        const first_line = iter.next().?;
 
         const parsed_first_line = std.mem.trimRight(u8, first_line, "\n");
         break :blk parsed_first_line;

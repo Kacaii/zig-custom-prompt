@@ -68,9 +68,9 @@ fn getBranch(allocator: std.mem.Allocator, is_repo: bool) ![]const u8 {
     defer allocator.free(git_status_cmd.stdout);
     defer allocator.free(git_status_cmd.stderr);
 
-    var iter = std.mem.splitScalar(u8, git_status_cmd.stdout, '\n');
+    var iter = std.mem.tokenizeScalar(u8, git_status_cmd.stdout, '\n');
 
-    const first_line = iter.first();
+    const first_line = iter.next().?;
     return try allocator.dupe(u8, first_line[10..]);
 }
 
