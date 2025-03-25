@@ -47,12 +47,11 @@ pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !boo
     const path = dir.realpathAlloc(allocator, ".") catch return false;
     defer allocator.free(path);
 
-    var path_iter = std.mem.splitScalar(u8, path, '/');
+    var path_iter = std.mem.tokenizeScalar(u8, path, '/');
 
     var directories: std.ArrayListUnmanaged([]const u8) = .empty;
     defer directories.deinit(allocator);
 
-    _ = path_iter.first(); // skip first
     while (path_iter.next()) |path_entry| {
         try directories.append(allocator, path_entry);
     }
