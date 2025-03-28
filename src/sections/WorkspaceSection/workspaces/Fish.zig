@@ -10,6 +10,7 @@ const root_file = "fish";
 
 const Self = @This();
 
+/// Returns Fish Shell's icon and version number.
 /// Caller owns the memory
 pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     _ = self;

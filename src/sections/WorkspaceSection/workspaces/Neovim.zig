@@ -10,6 +10,7 @@ const root_file = "nvim";
 
 const Self = @This();
 
+/// Returns Neovim's icon and version number.
 /// Caller owns the memory
 pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     _ = self;

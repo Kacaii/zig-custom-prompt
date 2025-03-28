@@ -10,15 +10,7 @@ const set_color = struct {
 
 const Self = @This();
 
-/// Always returns true, doest allocate anything.
-pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) bool {
-    _ = self;
-    _ = allocator;
-    _ = dir;
-
-    return true;
-}
-
+/// Returns the default workspace's icon ""
 /// Caller owns the memory
 pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     _ = self;
@@ -30,4 +22,13 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     );
 
     return default_section;
+}
+
+/// Always returns true, doest allocate anything.
+pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) bool {
+    _ = self;
+    _ = allocator;
+    _ = dir;
+
+    return true;
 }

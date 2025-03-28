@@ -10,6 +10,7 @@ const root_file = ".config";
 
 const Self = @This();
 
+/// Returns the .config icon
 /// Caller owns the memory
 pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
     _ = self;
