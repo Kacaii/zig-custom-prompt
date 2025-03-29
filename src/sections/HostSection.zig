@@ -16,7 +16,7 @@ pub fn init(allocator: Allocator) ![]u8 {
     const hostname = try std.posix.gethostname(&buffer);
     const section = std.fmt.allocPrint(
         allocator,
-        "{s}{s}{s}",
+        "{s} {s}{s}",
         .{ set_color.magenta, hostname, set_color.normal },
     );
 
