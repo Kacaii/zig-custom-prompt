@@ -19,8 +19,8 @@ root: []const u8,
 /// Caller owns the memory.
 pub fn init(allocator: std.mem.Allocator) !*Self {
     const is_repo = isRepo(allocator) catch false;
-    const branch = getBranch(allocator, is_repo) catch "";
-    const root = getRoot(allocator, is_repo) catch "";
+    const branch = getBranch(allocator) catch "";
+    const root = getRoot(allocator) catch "";
     const is_dirty = isDirty(allocator) catch false;
 
     const git_data = try allocator.create(Self);
@@ -43,6 +43,7 @@ pub fn deinit(self: *Self, allocator: std.mem.Allocator) void {
     allocator.free(self.root);
 }
 
+/// Returns whether the user is currently in a Git Repository
 fn isRepo(allocator: std.mem.Allocator) !bool {
     const git_status_arv = [_][]const u8{ "git", "status" };
     const git_status_cmd = try std.process.Child.run(.{
@@ -56,8 +57,10 @@ fn isRepo(allocator: std.mem.Allocator) !bool {
     return git_status_cmd.term.Exited == 0;
 }
 
-fn getBranch(allocator: std.mem.Allocator, is_repo: bool) ![]const u8 {
-    if (!is_repo) return "";
+/// Returns the current Git Branch, or an empty string if no root is detected.
+/// Caller owns the memory.
+fn getBranch(allocator: std.mem.Allocator) ![]const u8 {
+    if (!try isRepo(allocator)) return "";
 
     const git_status_arv = [_][]const u8{ "git", "status" };
     const git_status_cmd = try std.process.Child.run(.{
@@ -74,7 +77,11 @@ fn getBranch(allocator: std.mem.Allocator, is_repo: bool) ![]const u8 {
     return try allocator.dupe(u8, first_line[10..]);
 }
 
-fn getRoot(allocator: std.mem.Allocator, is_repo: bool) ![]const u8 {
+/// Returns the root of the current Git Repository, or an empty string if no root is detected.
+/// Caller owns the memory
+fn getRoot(allocator: std.mem.Allocator) ![]const u8 {
+    if (!try isRepo(allocator)) return "";
+
     const git_root_argv = [_][]const u8{ "git", "rev-parse", "--show-toplevel" };
     const git_root_cmd = try std.process.Child.run(.{
         .allocator = allocator,
@@ -84,12 +91,11 @@ fn getRoot(allocator: std.mem.Allocator, is_repo: bool) ![]const u8 {
     defer allocator.free(git_root_cmd.stdout);
     defer allocator.free(git_root_cmd.stderr);
 
-    if (!is_repo) return "";
-
     const parsed = std.mem.trimRight(u8, git_root_cmd.stdout, "\n");
     return try allocator.dupe(u8, parsed);
 }
 
+/// Returns wheter the current Git Repository is dirty.
 fn isDirty(allocator: std.mem.Allocator) !bool {
     const git_dirty_argv = [_][]const u8{ "git", "diff-files", "--quiet" };
     const git_dirty_cmd = try std.process.Child.run(.{
