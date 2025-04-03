@@ -43,7 +43,7 @@ pub fn main() !void {
     defer allocator.free(arrow_section);
 
     _ = try stdout.print(
-        " {s}  {s} {s}{s} \n {s} ",
+        " {s} | {s} {s}{s} \n {s} ",
         .{
             host_section,
             workspace_section,
