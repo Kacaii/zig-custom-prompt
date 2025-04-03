@@ -38,9 +38,7 @@ pub fn init(_: Self, allocator: std.mem.Allocator) ![]const u8 {
 // BUG: Is detecting the package.json in the home directory.
 
 /// Returns true if "package.json" is found
-pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !bool {
-    _ = self;
-
+pub fn checkRoot(_: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !bool {
     const git_data = try GitData.init(allocator);
     defer git_data.deinit(allocator);
 

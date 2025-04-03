@@ -12,9 +12,7 @@ const Self = @This();
 
 /// Returns the .config icon
 /// Caller owns the memory
-pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
-    _ = self;
-
+pub fn init(_: Self, allocator: std.mem.Allocator) ![]const u8 {
     const section = try std.fmt.allocPrint(allocator, "{s}{s}", .{
         set_color.blue,
         set_color.normal,

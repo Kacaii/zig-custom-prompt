@@ -36,9 +36,7 @@ pub fn init(_: Self, allocator: std.mem.Allocator) ![]const u8 {
 }
 
 /// Returns true if "build.zig" is found in the current directory or git repository.
-pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !bool {
-    _ = self;
-
+pub fn checkRoot(_: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !bool {
     const git_data = try GitData.init(allocator);
     defer git_data.deinit(allocator);
 
