@@ -34,8 +34,7 @@ pub fn init(allocator: std.mem.Allocator) !*Self {
     return git_data;
 }
 
-/// Deinitializes a GitData struct.
-/// Frees the memory.
+/// Free allocated resources from a GitData struct.
 pub fn deinit(self: *Self, allocator: std.mem.Allocator) void {
     defer allocator.destroy(self);
 
