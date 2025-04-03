@@ -5,7 +5,7 @@ const GitData = @import("../GitData.zig");
 
 const set_color = struct {
     const cyan = "\x1b[36m";
-    const normal = "\x1b[39m";
+    const default = "\x1b[39m";
 };
 
 const root_file = "go.mod";
@@ -33,7 +33,7 @@ pub fn init(_: Self, allocator: std.mem.Allocator) ![]const u8 {
     const section = try std.fmt.allocPrint(
         allocator,
         "{s} {s}{s}",
-        .{ set_color.cyan, version, set_color.normal },
+        .{ set_color.cyan, version, set_color.default },
     );
 
     return section;

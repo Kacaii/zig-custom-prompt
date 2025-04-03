@@ -3,7 +3,7 @@ const Child = std.process.Child;
 
 const set_color = struct {
     const green = "\x1b[32m";
-    const normal = "\x1b[39m";
+    const default = "\x1b[39m";
 };
 
 const root_file = "fish";
@@ -27,7 +27,7 @@ pub fn init(_: Self, allocator: std.mem.Allocator) ![]const u8 {
     const section = try std.fmt.allocPrint(
         allocator,
         "{s} {s}{s}",
-        .{ set_color.green, stdout[14..], set_color.normal },
+        .{ set_color.green, stdout[14..], set_color.default },
     );
 
     return section;

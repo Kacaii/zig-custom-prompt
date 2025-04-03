@@ -7,6 +7,7 @@ const HostSection = @import("./sections/HostSection.zig");
 const PathSection = @import("./sections/PathSection.zig");
 const GitSection = @import("./sections/WorkspaceSection/GitSection.zig");
 const WorkspaceSection = @import("./sections/WorkspaceSection/WorkspaceSection.zig");
+const ArrowSection = @import("./sections/ArrowSection.zig");
 
 pub fn main() !void {
     const cwd = fs.cwd();
@@ -38,9 +39,17 @@ pub fn main() !void {
     const path_section = PathSection.init(allocator, cwd) catch "";
     defer allocator.free(path_section);
 
-    // TODO: Make and arrow section so you can customize the color.
+    const arrow_section = try ArrowSection.init(allocator);
+    defer allocator.free(arrow_section);
+
     _ = try stdout.print(
-        " {s} │ {s} {s}{s} \n 󰍟 ",
-        .{ host_section, workspace_section, git_section, path_section },
+        " {s}  {s} {s}{s} \n {s} ",
+        .{
+            host_section,
+            workspace_section,
+            git_section,
+            path_section,
+            arrow_section,
+        },
     );
 }

@@ -8,7 +8,7 @@ const GitData = @import("./GitData.zig");
 /// Used for colorizing the output
 const set_color = struct {
     const red = "\x1b[31m";
-    const normal = "\x1b[39m";
+    const default = "\x1b[39m";
 };
 
 /// Returns the branch name and current git dirty status.
@@ -26,7 +26,7 @@ pub fn init(allocator: Allocator) ![]const u8 {
     const section = try std.fmt.allocPrint(
         allocator,
         "on {s}{s} {s}{s}{s} ",
-        .{ set_color.red, "", git_data.branch, is_dirty, set_color.normal },
+        .{ set_color.red, "", git_data.branch, is_dirty, set_color.default },
     );
 
     return section;

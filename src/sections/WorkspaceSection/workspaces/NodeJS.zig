@@ -5,7 +5,7 @@ const GitData = @import("../GitData.zig");
 
 const set_color = struct {
     const green = "\x1b[32m";
-    const normal = "\x1b[39m";
+    const default = "\x1b[39m";
 };
 
 const root_file = "package.json";
@@ -29,13 +29,11 @@ pub fn init(_: Self, allocator: std.mem.Allocator) ![]const u8 {
     const section = std.fmt.allocPrint(
         allocator,
         "{s} {s}{s}",
-        .{ set_color.green, version, set_color.normal },
+        .{ set_color.green, version, set_color.default },
     );
 
     return section;
 }
-
-// BUG: Is detecting the package.json in the home directory.
 
 /// Returns true if "package.json" is found
 pub fn checkRoot(_: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !bool {
