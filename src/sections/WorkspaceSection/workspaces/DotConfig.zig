@@ -23,9 +23,7 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
 }
 
 /// Returns true if current directory is "/home/user/.config"
-pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !bool {
-    _ = self;
-
+pub fn checkRoot(_: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !bool {
     const path = dir.realpathAlloc(allocator, ".") catch return false;
     defer allocator.free(path);
 

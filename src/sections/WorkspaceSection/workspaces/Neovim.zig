@@ -12,9 +12,7 @@ const Self = @This();
 
 /// Returns Neovim's icon and version number.
 /// Caller owns the memory
-pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
-    _ = self;
-
+pub fn init(_: Self, allocator: std.mem.Allocator) ![]const u8 {
     const argv = [_][]const u8{ "nvim", "--version" };
     const nvim_version_cmd = try Child.run(.{
         .allocator = allocator,

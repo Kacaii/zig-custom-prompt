@@ -14,9 +14,7 @@ const Self = @This();
 
 /// Returns NodeJS's icon and version number.
 /// Caller owns the memory
-pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
-    _ = self;
-
+pub fn init(_: Self, allocator: std.mem.Allocator) ![]const u8 {
     const argv = [_][]const u8{ "node", "--version" };
     const node_version_cmd = try Child.run(.{
         .allocator = allocator,

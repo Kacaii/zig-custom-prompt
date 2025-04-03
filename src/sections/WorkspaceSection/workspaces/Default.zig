@@ -12,9 +12,7 @@ const Self = @This();
 
 /// Returns the default workspace's icon ""
 /// Caller owns the memory
-pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
-    _ = self;
-
+pub fn init(_: Self, allocator: std.mem.Allocator) ![]const u8 {
     const default_section = std.fmt.allocPrint(
         allocator,
         "{s}{s}{s}",
@@ -25,10 +23,6 @@ pub fn init(self: Self, allocator: std.mem.Allocator) ![]const u8 {
 }
 
 /// Always returns true, doest allocate anything.
-pub fn checkRoot(self: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) bool {
-    _ = self;
-    _ = allocator;
-    _ = dir;
-
+pub fn checkRoot(_: Self, _: std.mem.Allocator, _: std.fs.Dir) bool {
     return true;
 }
