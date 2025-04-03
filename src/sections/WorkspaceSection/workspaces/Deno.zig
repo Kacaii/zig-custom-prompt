@@ -42,7 +42,8 @@ pub fn init(_: Self, allocator: std.mem.Allocator) ![]const u8 {
 
 /// Returns true if "deno.json" is found
 pub fn checkRoot(_: Self, allocator: std.mem.Allocator, dir: std.fs.Dir) !bool {
-    const git_data = try GitData.init(allocator);
+    var git_data: GitData = undefined;
+    try git_data.init(allocator);
     defer git_data.deinit(allocator);
 
     // Check if "deno.json" is found in the current working directory

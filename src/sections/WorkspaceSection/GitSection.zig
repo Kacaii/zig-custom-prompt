@@ -15,17 +15,18 @@ const set_color = struct {
 /// Returns an empty string if no repository is detected.
 /// Caller owns the memory
 pub fn init(allocator: Allocator) ![]const u8 {
-    const git_status = try GitData.init(allocator);
-    defer git_status.deinit(allocator);
+    var git_data: GitData = undefined;
+    try git_data.init(allocator);
+    defer git_data.deinit(allocator);
 
-    if (!git_status.is_repo) return "";
+    if (!git_data.is_repo) return "";
 
-    const is_dirty = if (git_status.is_dirty) "*" else "";
+    const is_dirty = if (git_data.is_dirty) "*" else "";
 
     const section = try std.fmt.allocPrint(
         allocator,
         "on {s}{s} {s}{s}{s} ",
-        .{ set_color.red, "", git_status.branch, is_dirty, set_color.normal },
+        .{ set_color.red, "", git_data.branch, is_dirty, set_color.normal },
     );
 
     return section;

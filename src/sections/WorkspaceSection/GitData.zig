@@ -15,29 +15,24 @@ is_repo: bool,
 /// Returns an empty string if no repository is detected.
 root: []const u8,
 
-/// Initializes a GitData struct.
+/// Initializes a GitData struct using in-place initialization.
 /// Caller owns the memory.
-pub fn init(allocator: std.mem.Allocator) !*Self {
+pub fn init(self: *Self, allocator: std.mem.Allocator) !void {
     const is_repo = isRepo(allocator) catch false;
     const branch = getBranch(allocator) catch "";
     const root = getRoot(allocator) catch "";
     const is_dirty = isDirty(allocator) catch false;
 
-    const git_data = try allocator.create(Self);
-    git_data.* = Self{
+    self.* = Self{
         .is_repo = is_repo,
         .branch = branch,
         .root = root,
         .is_dirty = is_dirty,
     };
-
-    return git_data;
 }
 
 /// Free allocated resources from a GitData struct.
 pub fn deinit(self: *Self, allocator: std.mem.Allocator) void {
-    defer allocator.destroy(self);
-
     allocator.free(self.branch);
     allocator.free(self.root);
 }
