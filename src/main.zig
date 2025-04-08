@@ -40,11 +40,11 @@ pub fn main() !void {
     defer gpa.free(path_section);
 
     // Arrow
-    const arrow_section = PromptSymbol.init(gpa) catch " $ ";
-    defer gpa.free(arrow_section);
+    const prompt_symbol = PromptSymbol.init(gpa) catch " $ ";
+    defer gpa.free(prompt_symbol);
 
     _ = try stdout.print(
         " {s} | {s} | {s}{s} \n {s} ",
-        .{ host_section, workspace_section, git_section, path_section, arrow_section },
+        .{ host_section, workspace_section, git_section, path_section, prompt_symbol },
     );
 }
