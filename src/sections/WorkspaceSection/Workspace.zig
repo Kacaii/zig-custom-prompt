@@ -57,7 +57,7 @@ test Workspace {
     defer allocator.free(git_init_cmd.stderr);
 
     _ = try tmp_dir.dir.createFile("deno.json", .{ .read = true });
-    const ws = Workspace{ .deno = .{} };
+    const ws: Workspace = .{ .deno = .{} };
 
     try std.testing.expect(try ws.checkRoot(allocator, tmp_dir.dir));
 
