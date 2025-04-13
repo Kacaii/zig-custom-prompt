@@ -2,7 +2,7 @@
 
 const std = @import("std");
 
-const Workspace = @import("./Workspace.zig").Workspace;
+const Workspace = @import("Workspace.zig").Workspace;
 
 /// Returns the programming language being used on the current project, and its version.
 /// Caller owns the memory.

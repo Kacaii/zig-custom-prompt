@@ -3,11 +3,11 @@ const fs = std.fs;
 const Child = std.process.Child;
 const builtin = @import("builtin");
 
-const HostSection = @import("./sections/HostSection.zig");
-const PathSection = @import("./sections/PathSection.zig");
-const GitSection = @import("./sections/WorkspaceSection/GitSection.zig");
-const WorkspaceSection = @import("./sections/WorkspaceSection/WorkspaceSection.zig");
-const PromptSymbol = @import("./sections/PromptSymbolSection.zig");
+const HostSection = @import("sections/HostSection.zig");
+const PathSection = @import("sections/PathSection.zig");
+const GitSection = @import("sections/WorkspaceSection/GitSection.zig");
+const WorkspaceSection = @import("sections/WorkspaceSection/WorkspaceSection.zig");
+const PromptSymbol = @import("sections/PromptSymbolSection.zig");
 
 pub fn main() !void {
     const cwd = fs.cwd();

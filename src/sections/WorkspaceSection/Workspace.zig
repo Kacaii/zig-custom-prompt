@@ -3,14 +3,14 @@
 
 const std = @import("std");
 
-const Default = @import("./workspaces/Default.zig");
-const Deno = @import("./workspaces/Deno.zig");
-const Go = @import("./workspaces/Go.zig");
-const Node = @import("./workspaces/NodeJS.zig");
-const Zig = @import("./workspaces/Zig.zig");
-const DotConfig = @import("./workspaces/DotConfig.zig");
-const Fish = @import("./workspaces/Fish.zig");
-const Nvim = @import("./workspaces/Neovim.zig");
+const Default = @import("workspaces/Default.zig");
+const Deno = @import("workspaces/Deno.zig");
+const Go = @import("workspaces/Go.zig");
+const Node = @import("workspaces/NodeJS.zig");
+const Zig = @import("workspaces/Zig.zig");
+const DotConfig = @import("workspaces/DotConfig.zig");
+const Fish = @import("workspaces/Fish.zig");
+const Nvim = @import("workspaces/Neovim.zig");
 
 pub const Workspace = union(enum) {
     default: Default,

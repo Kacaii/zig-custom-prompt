@@ -3,7 +3,7 @@
 const std = @import("std");
 const Allocator = std.mem.Allocator;
 
-const GitData = @import("./GitData.zig");
+const GitData = @import("GitData.zig");
 
 /// Used for colorizing the output
 const set_color = struct {
