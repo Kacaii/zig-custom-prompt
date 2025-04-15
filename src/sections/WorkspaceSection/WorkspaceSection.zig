@@ -17,6 +17,7 @@ pub fn init(allocator: std.mem.Allocator, dir: std.fs.Dir) ![]const u8 {
         .{ .nvim = .{} },
     };
 
+    // Check for existing workspaces
     for (workspaces) |ws| {
         if (try ws.checkRoot(allocator, dir)) {
             const section = try ws.init(allocator);
@@ -24,6 +25,7 @@ pub fn init(allocator: std.mem.Allocator, dir: std.fs.Dir) ![]const u8 {
         }
     }
 
+    // Initialize the default one in case that no workspace is found
     const default_ws = Workspace{ .default = .{} };
     const section = try default_ws.init(allocator);
     return section;
