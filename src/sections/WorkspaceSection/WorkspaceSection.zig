@@ -15,6 +15,7 @@ pub fn init(allocator: std.mem.Allocator, dir: std.fs.Dir) ![]const u8 {
         .{ .dot_config = .{} },
         .{ .fish = .{} },
         .{ .nvim = .{} },
+        .{ .gleam = .{} },
     };
 
     // Check for existing workspaces
